@@ -1,0 +1,339 @@
+{
+  "ruleChain": {
+    "additionalInfo": {
+      "description": ""
+    },
+    "name": "Generator and delta",
+    "type": "CORE",
+    "firstRuleNodeId": null,
+    "root": false,
+    "debugMode": true,
+    "configuration": null
+  },
+  "metadata": {
+    "firstNodeIndex": 14,
+    "nodes": [
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 73,
+          "layoutY": 474
+        },
+        "type": "org.thingsboard.rule.engine.metadata.CalculateDeltaNode",
+        "name": "DeltaBouttonVert",
+        "debugMode": false,
+        "configuration": {
+          "inputValueKey": "pulseCounter",
+          "outputValueKey": "delta",
+          "useCache": true,
+          "addPeriodBetweenMsgs": true,
+          "periodValueKey": "periodInMs",
+          "round": null,
+          "tellFailureIfDeltaIsNegative": false
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 391,
+          "layoutY": 563
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "Courriel_Moteur_Aucun_Changement",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "metadata.delta_sb_1 = msg.Delta_SB_1;\nmetadata.delta_sb_2 = msg.Delta_SB_2;\n\nmetadata.Statut_Broche_1 = msg.SB_1;\nmetadata.Statut_Broche_2 = msg.SB_2;\nmetadata.message=\"Aucun Changement\"\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 125,
+          "layoutY": 575
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "DeltaChange_Then_Email",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return !(msg.Delta_SB_1 == 0 && msg.Delta_SB_2 == 0);"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 324,
+          "layoutY": 151
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Moteur Gauche",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return (msg.SB_1 ==1 && msg.SB_2==0);"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 617,
+          "layoutY": 75
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "Courriel_Moteur_Gauche",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "metadata.delta_sb_1 = msg.Delta_SB_1;\nmetadata.delta_sb_2 = msg.Delta_SB_2;\nmetadata.Statut_Broche_1 = msg.SB_1;\nmetadata.Statut_Broche_2 = msg.SB_2;\nmetadata.message=\"Moteur tourne vers la gauche\";\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 328,
+          "layoutY": 247
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Moteur Droite",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return (msg.SB_1 ==0 && msg.SB_2==1);"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 617,
+          "layoutY": 139
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "Courriel_Moteur_Droite",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "metadata.delta_sb_1 = msg.Delta_SB_1;\nmetadata.delta_sb_2 = msg.Delta_SB_2;\n\nmetadata.Statut_Broche_1 = msg.SB_1;\nmetadata.Statut_Broche_2 = msg.SB_2;\nmetadata.message=\"Moteur tourne vers la droite\"\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 328,
+          "layoutY": 342
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Moteur STOP",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return (msg.SB_1 ==0 && msg.SB_2==0);"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 618,
+          "layoutY": 210
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "Courriel_Moteur_STOP",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "metadata.delta_sb_1 = msg.Delta_SB_1;\nmetadata.delta_sb_2 = msg.Delta_SB_2;\n\nmetadata.Statut_Broche_1 = msg.SB_1;\nmetadata.Statut_Broche_2 = msg.SB_2;\nmetadata.message=\"Moteur est arreté\"\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 323,
+          "layoutY": 453
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
+        "name": "Moteur Erreur de direction",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "return (msg.SB_1 ==1 && msg.SB_2==1);"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 615,
+          "layoutY": 281
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "Courriel_Moteur_STOP",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "metadata.delta_sb_1 = msg.Delta_SB_1;\nmetadata.delta_sb_2 = msg.Delta_SB_2;\n\nmetadata.Statut_Broche_1 = msg.SB_1;\nmetadata.Statut_Broche_2 = msg.SB_2;\nmetadata.message=\"Impossible de tournée dans les deux direction\"\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 940,
+          "layoutY": 148
+        },
+        "type": "org.thingsboard.rule.engine.mail.TbMsgToEmailNode",
+        "name": "To Email",
+        "debugMode": true,
+        "configuration": {
+          "fromTemplate": "ido@ccnb.ca",
+          "toTemplate": "bidon@bidon.ca",
+          "ccTemplate": null,
+          "bccTemplate": null,
+          "subjectTemplate": "Notification ${message}",
+          "mailBodyType": null,
+          "isHtmlTemplate": null,
+          "bodyTemplate": " Le statut de la broche 1 est ${Statut_Broche_1} \n Le statut de la broche 2 est ${Statut_Broche_2}\n et le message est ${message}\n\nDelta pour la broche 1 est ${delta_sb_1}\nDelta pour la broche 2 est ${delta_sb_2}"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 947,
+          "layoutY": 277
+        },
+        "type": "org.thingsboard.rule.engine.mail.TbSendEmailNode",
+        "name": "Send email",
+        "debugMode": true,
+        "configuration": {
+          "useSystemSmtpSettings": true,
+          "smtpHost": "localhost",
+          "smtpPort": 25,
+          "username": null,
+          "password": null,
+          "smtpProtocol": "smtp",
+          "timeout": 10000,
+          "enableTls": false,
+          "tlsVersion": "TLSv1.2",
+          "enableProxy": false,
+          "proxyHost": null,
+          "proxyPort": null,
+          "proxyUser": null,
+          "proxyPassword": null
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 61,
+          "layoutY": 399
+        },
+        "type": "org.thingsboard.rule.engine.metadata.CalculateDeltaNode",
+        "name": "DeltaHumidite",
+        "debugMode": true,
+        "configuration": {
+          "inputValueKey": "BouttonBleue",
+          "outputValueKey": "Delta_BouttonBleue",
+          "useCache": true,
+          "addPeriodBetweenMsgs": false,
+          "periodValueKey": "periodInMs",
+          "round": null,
+          "tellFailureIfDeltaIsNegative": true
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 57,
+          "layoutY": 312
+        },
+        "type": "org.thingsboard.rule.engine.metadata.CalculateDeltaNode",
+        "name": "deltaTemperature",
+        "debugMode": true,
+        "configuration": {
+          "inputValueKey": "BouttonRouge",
+          "outputValueKey": "Delta_BouttonRouge",
+          "useCache": true,
+          "addPeriodBetweenMsgs": true,
+          "periodValueKey": "periodInMs",
+          "round": null,
+          "tellFailureIfDeltaIsNegative": false
+        }
+      }
+    ],
+    "connections": [
+      {
+        "fromIndex": 0,
+        "toIndex": 2,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 1,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 3,
+        "type": "True"
+      },
+      {
+        "fromIndex": 3,
+        "toIndex": 4,
+        "type": "True"
+      },
+      {
+        "fromIndex": 3,
+        "toIndex": 5,
+        "type": "False"
+      },
+      {
+        "fromIndex": 4,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 5,
+        "toIndex": 6,
+        "type": "True"
+      },
+      {
+        "fromIndex": 5,
+        "toIndex": 7,
+        "type": "False"
+      },
+      {
+        "fromIndex": 6,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 8,
+        "type": "True"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 9,
+        "type": "False"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 9,
+        "toIndex": 10,
+        "type": "True"
+      },
+      {
+        "fromIndex": 10,
+        "toIndex": 11,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 11,
+        "toIndex": 12,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 13,
+        "toIndex": 0,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 13,
+        "type": "Success"
+      }
+    ],
+    "ruleChainConnections": null
+  }
+}
